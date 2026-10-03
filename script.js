@@ -377,18 +377,21 @@ const UI = {
     kicker: "CURRICULUM VITAE", rol: "GAME DEVELOPER", start: "PRESS START",
     mover: "MOVER", abrir: "ABRIR", sonido: "SONIDO",
     cambiar: "CAMBIAR", volver: "VOLVER", idioma: "ENGLISH",
+    tocar: "TOCA UNA SECCIÓN", desliza: "DESLIZA PARA CAMBIAR",
     dias: ["DOMINGO", "LUNES", "MARTES", "MIÉRCOLES", "JUEVES", "VIERNES", "SÁBADO"]
   },
   en: {
     kicker: "CURRICULUM VITAE", rol: "GAME DEVELOPER", start: "PRESS START",
     mover: "MOVE", abrir: "OPEN", sonido: "SOUND",
     cambiar: "SWITCH", volver: "BACK", idioma: "ESPAÑOL",
+    tocar: "TAP A SECTION", desliza: "SWIPE TO SWITCH",
     dias: ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"]
   }
 };
 
-let lang = "es";
-try { lang = localStorage.getItem("cv-lang") === "en" ? "en" : "es"; } catch (e) {}
+/* Arranca en ingles; si el visitante ya eligio idioma, se respeta su eleccion. */
+let lang = "en";
+try { lang = localStorage.getItem("cv-lang") === "es" ? "es" : "en"; } catch (e) {}
 CV = lang === "en" ? CV_EN : CV_ES;
 
 function aplicarTextosUI() {
@@ -635,6 +638,31 @@ document.addEventListener("keydown", (e) => {
     else if (/^[1-9]$/.test(k) && Number(k) <= ORDEN.length) { mostrarSeccion(Number(k) - 1); }
   }
 });
+
+
+/* ============ GESTOS (movil) ============ */
+/* Deslizar de lado cambia de seccion; deslizar hacia abajo regresa al menu. */
+(function gestos() {
+  let x0 = 0, y0 = 0, t0 = 0;
+
+  document.addEventListener("touchstart", (e) => {
+    const t = e.changedTouches[0];
+    x0 = t.clientX; y0 = t.clientY; t0 = Date.now();
+  }, { passive: true });
+
+  document.addEventListener("touchend", (e) => {
+    if (vista !== "detalle") return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - x0, dy = t.clientY - y0;
+    if (Date.now() - t0 > 700) return;              // demasiado lento, no es gesto
+
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6) {
+      mostrarSeccion(cursor + (dx < 0 ? 1 : -1));   // izquierda = siguiente
+    } else if (dy > 90 && Math.abs(dy) > Math.abs(dx) * 1.6 && cuerpo.scrollTop <= 0) {
+      volverAlMenu();
+    }
+  }, { passive: true });
+})();
 
 /* ============ RELOJ ============ */
 function reloj() {

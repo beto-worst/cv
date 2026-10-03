@@ -432,6 +432,8 @@ body.has-video .bg-vignette{
   background:var(--white); color:var(--blue); padding:.3em .8em;
 }
 
+.toque{display:none;}
+
 /* ============ RESPONSIVE ============ */
 @keyframes rowInFlat{
   from{opacity:0; transform:translateX(30px);}
@@ -439,40 +441,84 @@ body.has-video .bg-vignette{
 }
 
 @media (max-width:820px){
+  html,body{overflow-y:auto; overflow-x:hidden;}
   :root{--skew:-6deg; --unskew:6deg; --tilt:-2deg;}
 
+  /* --- pistas: fuera el teclado, dentro el toque --- */
+  .tecla{display:none;}
+  .toque{display:inline;}
 
+  /* --- MENU --- */
   .screen-menu{
     flex-direction:column;
-    align-items:flex-start; justify-content:flex-start;
-    padding-top:12vh;
+    align-items:stretch; justify-content:center;
+    padding:9vh 0 14vh;
+    min-height:100dvh;
   }
-  .stack{margin:0; padding:0 20px; width:100%;}
-  .stack-item{font-size:clamp(1.7rem,9vw,3rem); margin-right:0; margin-left:calc(var(--i) * 6px);}
-  .corner{position:static; margin:2.4rem 0 0 20px; text-align:left;}
+  .stack{margin:0; padding:0 18px; width:100%;}
+  .stack-item{
+    font-size:clamp(1.9rem,9.5vw,3.1rem);
+    line-height:.92;              /* menos encimado: se puede tocar bien */
+    margin-right:0;
+    margin-left:calc(var(--i) * 7px);
+    padding:.3em .5em .3em .4em;  /* area de toque mas grande */
+  }
+  .stack-item.active{transform:skewX(var(--skew)) rotate(var(--tilt)) translateX(10px);}
+  .corner{position:static; margin:2.2rem 0 0 18px; text-align:left;}
 
-  .hints{font-size:.66rem; gap:10px; padding-bottom:12px; justify-content:flex-start;}
+  .hints{
+    position:static; justify-content:flex-start;
+    font-size:.68rem; gap:12px; padding:1.6rem 18px 2rem;
+  }
 
-  .screen-detail{padding:16px 16px 0;}
-  .tabs{flex-wrap:nowrap;}
+  /* --- DETALLE --- */
+  .screen-detail{padding:14px 14px 0; min-height:100dvh;}
+  .tabs{gap:.4rem;}
+  .bumper{padding:.5em .2em;}       /* mas facil de atinar con el dedo */
   .bumper-label{display:none;}
   .tab-current{font-size:1.5rem;}
+  .detail-body{padding-bottom:3rem;}
 
+  /* La fila se vuelve tarjeta: retrato a la izquierda, texto a la derecha */
   .row{
-    flex-wrap:wrap; transform:none; animation-name:rowInFlat;
-    max-width:100%; margin-left:0; margin-right:0;
+    display:grid; grid-template-columns:auto 1fr;
+    grid-template-areas:"thumb tag" "thumb main" "value value";
+    max-width:100%; margin:0 0 .6rem;
+    transform:none; animation-name:rowInFlat;
+    align-items:stretch;
   }
-  .row:hover, .row.is-link:hover{transform:none;}
-  .row-thumb{flex:0 0 auto; width:auto; min-width:46px; padding:.55em .7em; border-right:0;}
-  .row-tag{flex:1 1 auto; width:auto; min-width:0;}
-  .row-main, .row-value{flex:0 0 100%; width:100%;}
-  .row-tag span, .row-main > *, .row-value span{transform:none;}
-  .row-tag{min-width:0;}
-  .row-value{justify-content:flex-start;}
-  .row-badge span{transform:none;}
+  .row.is-link:hover{transform:none;}
+
+  /* Todas las filas usan la misma rejilla. Si la miniatura son iniciales
+     va angosta; si es retrato, ancha. Sin miniatura, la columna se colapsa. */
+  .row-thumb{
+    grid-area:thumb; width:auto; min-width:54px;
+    border-right:2px solid rgba(255,255,255,.28);
+  }
+  .row.con-img .row-thumb{width:88px; min-width:0;}
+  .row-tag{grid-area:tag; min-width:0; padding:.5em .9em;}
+  .row-main{grid-area:main;}
+  .row-value{grid-area:value; justify-content:flex-start;}
+
+  .row-thumb span, .row-main > *, .row-value span, .row-value .rv-label,
+  .row-value .rv-num, .row-badge span{transform:none;}
+  .row-thumb img{transform:none;}   /* sin inclinacion que corregir */
+  .row-title{font-size:1.05rem;}
+  .row-desc{font-size:.92rem;}
 
   .prose{transform:none; animation-name:rowInFlat; margin-left:0;}
   .prose > *{transform:none;}
+  .chip, .link-btn{transform:none;}
+  .chip span, .link-btn span{transform:none;}
+  .link-btn:hover{transform:translateY(-3px);}
+
+  .hud{padding:1.4rem clamp(18px,5vw,40px) 0;}
+}
+
+/* Pantallas muy angostas: el retrato estorba mas de lo que aporta */
+@media (max-width:380px){
+  .row-thumb{width:68px;}
+  .stack-item{font-size:1.75rem;}
 }
 
 @media (prefers-reduced-motion:reduce){
