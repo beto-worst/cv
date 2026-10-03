@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Curriculum Persona 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ FONDO ============ -->
+<div class="bg" aria-hidden="true">
+  <div class="bg-base"></div>
+
+  <!-- Tu video de Persona 3 -->
+  <video id="bg-video" autoplay muted loop playsinline preload="auto">
+    <source src="assets/fondo_persona3.jpg.mp4" type="video/mp4">
+  </video>
+
+  <!-- Formas fluidas de respaldo (se ocultan solas si el video carga) -->
+  <svg class="bg-flow" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#7ff6ff" stop-opacity=".95"/>
+        <stop offset="100%" stop-color="#0fd0ff" stop-opacity=".25"/>
+      </linearGradient>
+      <linearGradient id="g2" x1="1" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#ffffff" stop-opacity=".85"/>
+        <stop offset="100%" stop-color="#9beeff" stop-opacity=".15"/>
+      </linearGradient>
+    </defs>
+    <g class="flow flow-a">
+      <path fill="url(#g1)" d="M-120 640 C 120 520, 180 300, 120 60 L 320 20 C 380 300, 300 540, 90 700 Z"/>
+      <path fill="url(#g2)" d="M-60 780 C 220 620, 250 380, 200 120 L 300 100 C 360 380, 300 600, 120 800 Z"/>
+    </g>
+    <g class="flow flow-b">
+      <path fill="url(#g2)" d="M1240 120 C 1000 240, 960 460, 1030 760 L 860 800 C 800 480, 900 240, 1120 60 Z"/>
+      <path fill="url(#g1)" d="M1300 380 C 1120 440, 1080 600, 1120 800 L 1020 800 C 990 580, 1060 420, 1240 320 Z"/>
+    </g>
+  </svg>
+
+  <div class="bg-stripes"></div>
+  <div class="bg-vignette"></div>
+</div>
+
+<!-- ============ PANTALLA DE INICIO ============ -->
+<section class="boot" id="boot">
+  <div class="boot-inner">
+    <div class="boot-kicker" data-ui="kicker">CURRICULUM VITAE</div>
+    <h1 class="boot-name"><span class="l1">ALBERTO</span><span class="l2">VÁZQUEZ</span></h1>
+    <div class="boot-role" data-ui="rol">GAME DEVELOPER</div>
+    <button class="btn-press" id="boot-press" data-ui="start">PRESS START</button>
+  </div>
+</section>
+
+<!-- ============ MENÚ PRINCIPAL ============ -->
+<section class="screen screen-menu" id="screen-menu" hidden>
+  <ul class="stack" id="stack" role="listbox" aria-label="Secciones"></ul>
+
+  <div class="corner">
+    <div class="corner-day" id="corner-day">MIÉRCOLES</div>
+    <div class="corner-clock" id="corner-clock">00:00</div>
+    <div class="corner-name"><span>ALBERTO VÁZQUEZ · </span><span data-ui="rol">GAME DEVELOPER</span></div>
+  </div>
+
+  <div class="hints">
+    <span><b>↑ ↓</b> <span data-ui="mover">MOVER</span></span>
+    <span><b>ENTER</b> <span data-ui="abrir">ABRIR</span></span>
+    <span><b>M</b> <span data-ui="sonido">SONIDO</span></span>
+    <button class="lang-btn" data-lang-btn><b>L</b> <span data-ui="idioma">ENGLISH</span></button>
+  </div>
+</section>
+
+<!-- ============ PANTALLA DE DETALLE ============ -->
+<section class="screen screen-detail" id="screen-detail" hidden>
+
+  <div class="tabs">
+    <button class="bumper" id="tab-prev" aria-label="Sección anterior">
+      <span class="bumper-key">LB</span><span class="bumper-label" id="tab-prev-label"></span>
+    </button>
+
+    <h2 class="tab-current" id="tab-current">SECCIÓN</h2>
+
+    <button class="bumper bumper-r" id="tab-next" aria-label="Sección siguiente">
+      <span class="bumper-label" id="tab-next-label"></span><span class="bumper-key">RB</span>
+    </button>
+  </div>
+
+  <div class="detail-body" id="detail-body" aria-live="polite"></div>
+
+  <div class="hints hints-detail">
+    <span><b>LB / RB</b> <span data-ui="cambiar">CAMBIAR</span></span>
+    <span><b>ESC</b> <span data-ui="volver">VOLVER</span></span>
+    <span><b>M</b> <span data-ui="sonido">SONIDO</span></span>
+    <button class="lang-btn" data-lang-btn><b>L</b> <span data-ui="idioma">ENGLISH</span></button>
+  </div>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
